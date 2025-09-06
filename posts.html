@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts Management - Mini Admin Dashboard</title>
+    
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Admin Dashboard</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="users.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Users
+                </a>
+                <a href="posts.html" class="nav-link active">
+                    <i class="fas fa-file-alt"></i>
+                    Posts
+                </a>
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <header class="page-header animate__animated animate__fadeInDown">
+                <h1>Posts Management</h1>
+                <p>Create, edit, and manage posts with live search functionality</p>
+            </header>
+
+            <!-- Search and Actions Section -->
+            <section class="search-section animate__animated animate__fadeInUp">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchPosts" placeholder="Search posts by title or content...">
+                    </div>
+                    <div class="search-actions">
+                        <button id="addPost" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add New Post
+                        </button>
+                        <button id="refreshPosts" class="btn btn-secondary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Posts Grid Section -->
+            <section class="posts-section animate__animated animate__fadeInUp animate__delay-1s">
+                <div id="postsGrid" class="posts-grid">
+                    <!-- Posts will be populated by JavaScript -->
+                </div>
+                
+                <!-- No Results Message -->
+                <div id="noResults" class="no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h3>No posts found</h3>
+                    <p>Try adjusting your search criteria</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Post Modal -->
+    <div id="postModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h2 id="postModalTitle">Add New Post</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="postForm">
+                    <div class="form-group">
+                        <label for="postTitle">Title:</label>
+                        <input type="text" id="postTitle" name="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postBody">Content:</label>
+                        <textarea id="postBody" name="body" rows="6" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="postUserId">User ID:</label>
+                        <select id="postUserId" name="userId" required>
+                            <option value="">Select User</option>
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closePostModal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="savePost">Save Post</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Modal -->
+    <div id="commentsModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h2 id="commentsModalTitle">Post Comments</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="commentsList" class="comments-list">
+                    <!-- Comments will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeCommentsModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h2>Confirm Action</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmAction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/posts.js"></script>
+</body>
+</html>
+

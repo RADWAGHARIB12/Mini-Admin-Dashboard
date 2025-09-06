@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management - Mini Admin Dashboard</title>
+    
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Admin Dashboard</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Dashboard
+                </a>
+                <a href="users.html" class="nav-link active">
+                    <i class="fas fa-users"></i>
+                    Users
+                </a>
+                <a href="posts.html" class="nav-link">
+                    <i class="fas fa-file-alt"></i>
+                    Posts
+                </a>
+                <button id="themeToggle" class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <header class="page-header animate__animated animate__fadeInDown">
+                <h1>Users Management</h1>
+                <p>Manage user accounts, view details, and mark favorites</p>
+            </header>
+
+            <!-- Users Table Section -->
+            <section class="table-section animate__animated animate__fadeInUp">
+                <div class="table-header">
+                    <h2>All Users</h2>
+                    <div class="table-actions">
+                        <button id="refreshUsers" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button id="showFavorites" class="btn btn-secondary">
+                            <i class="fas fa-star"></i>
+                            Show Favorites
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="usersTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Website</th>
+                                <th>Company</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- User Details Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h2 id="modalTitle">User Details</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="userName">Name:</label>
+                        <input type="text" id="userName" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userUsername">Username:</label>
+                        <input type="text" id="userUsername" name="username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userEmail">Email:</label>
+                        <input type="email" id="userEmail" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userPhone">Phone:</label>
+                        <input type="text" id="userPhone" name="phone">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userWebsite">Website:</label>
+                        <input type="url" id="userWebsite" name="website">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userCompany">Company:</label>
+                        <input type="text" id="userCompany" name="company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userStreet">Street:</label>
+                        <input type="text" id="userStreet" name="street">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userCity">City:</label>
+                        <input type="text" id="userCity" name="city">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="userZipcode">Zipcode:</label>
+                        <input type="text" id="userZipcode" name="zipcode">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeModal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveUser">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <div class="modal-header">
+                <h2>Confirm Action</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelAction">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmAction">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script src="js/users.js"></script>
+</body>
+</html>
+
