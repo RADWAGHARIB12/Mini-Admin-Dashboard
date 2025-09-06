@@ -37,8 +37,6 @@ I choose these technologies to build a robust and efficient frontend application
 
 APIs Powering the Data 🔗
 
-For data, I've leveraged the fantastic JSONPlaceholder API. It's a great mock API that allowed me to focus on the frontend logic without needing a backend:
-
 •Users: https://jsonplaceholder.typicode.com/users
 
 •Posts: https://jsonplaceholder.typicode.com/posts
@@ -47,49 +45,16 @@ For data, I've leveraged the fantastic JSONPlaceholder API. It's a great mock AP
 
 (Note: Since JSONPlaceholder is read-only, I've implemented local storage for any create, update, or delete operations to give you a full CRUD experience!)
 
-Project Structure 📁
 
-I've kept the project structure clean and modular for easy navigation and future scalability:
-
-Plain Text
-
-
-mini-admin-dashboard/
-├── index.html              # The main dashboard page
-├── users.html              # Dedicated page for user management
-├── posts.html              # Dedicated page for post management
-├── css/
-│   └── style.css           # All the styling, including light/dark mode variables
-├── js/
-│   ├── main.js             # Core utilities and global functions
-│   ├── dashboard.js        # Logic specific to the dashboard page
-│   ├── users.js            # Logic for user management
-│   └── posts.js            # Logic for post management
-├── assets/
-│   └── images/             # Placeholder for any image assets
-└── README.md               # You're reading it! Project documentation
 
 
 Getting Started: How to Run This Project on Your Machine 🚀
 
-Ready to see it in action? Here's how you can get this dashboard up and running on your Windows machine. It's super straightforward!
-
-
 1.Download the Project:
-
-•If you're viewing this on GitHub, click the green "Code" button and choose "Download ZIP".
-
-•Alternatively, if you have Git installed, you can clone the repository:
-
-
-
-
 2.Start a Local Web Server :
 
 
 Taking a Tour: How to Use the Dashboard 📖
-
-I've tried to make the dashboard intuitive, but here are some pointers:
 
 •Dashboard Page: This is your landing spot. See the summary statistics, and use the quick action cards to jump to Users or Posts.
 
